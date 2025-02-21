@@ -2,6 +2,7 @@ import {
   Autocomplete,
   AutocompleteChangeReason,
   AutocompleteProps,
+  InputAdornment,
   TextField,
 } from "@mui/material";
 import React, { useCallback, useMemo, useState } from "react";
@@ -201,12 +202,27 @@ const MultiVariableAutocomplete = ({
       onKeyDown={handleKeyDown}
       renderInput={(params) => (
         <div className="multi-autocomplete">
-          <MultiVariableAutocompleteChips
-            value={currentValue}
-            onChipDelete={handleChipDelete}
-            validate={validateItem}
-          ></MultiVariableAutocompleteChips>
-          <TextField {...params} type={inputType} />
+          <TextField
+            {...params}
+            type={inputType}
+            slotProps={{
+              input: {
+                ...params.InputProps,
+                startAdornment: (
+                  <>
+                    <InputAdornment position="start">
+                      <MultiVariableAutocompleteChips
+                        value={currentValue}
+                        onChipDelete={handleChipDelete}
+                        validate={validateItem}
+                      ></MultiVariableAutocompleteChips>
+                    </InputAdornment>
+                    {params.InputProps.startAdornment}
+                  </>
+                ),
+              },
+            }}
+          />
         </div>
       )}
       value={[]} // hardcodde to empty array to clear input on change
